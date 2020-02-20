@@ -27,6 +27,9 @@ class Sheet
     /** @var SheetManager Sheet manager */
     private $sheetManager;
 
+    /** @var null|string AutoFilter columns */
+    private $autoFilter;
+
     /**
      * @param int $sheetIndex Index of the sheet, based on order in the workbook (zero-based)
      * @param string $associatedWorkbookId ID of the sheet's associated workbook
@@ -107,5 +110,21 @@ class Sheet
         $this->isVisible = $isVisible;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAutoFilter()
+    {
+        return $this->autoFilter;
+    }
+
+    /**
+     * @param string|null $ref
+     */
+    public function setAutoFilter($ref)
+    {
+        $this->autoFilter = $ref;
     }
 }

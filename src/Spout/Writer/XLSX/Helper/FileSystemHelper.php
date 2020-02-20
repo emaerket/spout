@@ -314,6 +314,42 @@ EOD;
 
         $workbookXmlFileContents .= <<<'EOD'
     </sheets>
+EOD;
+
+        $definedNames = [];
+
+        /** @var Worksheet $worksheet */
+        foreach ($worksheets as $worksheet) {
+            $autoFilter = $worksheet->getExternalSheet()->getAutoFilter();
+
+            if (!$autoFilter) {
+                continue;
+            }
+
+            $definedNames[] = $worksheet->getExternalSheet()->getName() . '!' . preg_replace('/[[:alpha:]]+|[[:digit:]]+/', '\$$0', $autoFilter);
+        }
+
+
+        if ($definedNames) {
+            $workbookXmlFileContents .= <<<'EOD'
+    <definedNames>
+EOD;
+
+            foreach ($definedNames as $definedName) {
+                $workbookXmlFileContents .= <<<EOD
+        <definedName function="false" hidden="true" localSheetId="0" name="_xlnm._FilterDatabase" vbProcedure="false">
+            $definedName
+        </definedName>
+EOD;
+            }
+
+            $workbookXmlFileContents .= <<<'EOD'
+    </definedNames>
+EOD;
+        }
+
+
+    $workbookXmlFileContents .= <<<'EOD'
 </workbook>
 EOD;
 

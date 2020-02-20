@@ -271,6 +271,13 @@ EOD;
         }
 
         \fwrite($worksheetFilePointer, '</sheetData>');
+
+        $autoFilter = $worksheet->getExternalSheet()->getAutoFilter();
+
+        if ($autoFilter) {
+            \fwrite($worksheetFilePointer, sprintf('<autoFilter ref="%s"></autoFilter>', $autoFilter));
+        }
+
         \fwrite($worksheetFilePointer, '</worksheet>');
         \fclose($worksheetFilePointer);
     }
